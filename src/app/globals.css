@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+/* Dark-first: :root is the dark palette; light is opted into by the OS. */
+:root {
+  --background: #08090c;
+  --surface: #0f1216;
+  --surface-2: #161a20;
+  --foreground: #f3f5f7;
+  --muted: #969fad;
+  --border: #242832;
+  --accent: #10b981;
+  --accent-strong: #34d399;
+  --accent-contrast: #052e1c;
+  --up: #34d399;
+  --down: #fb7185;
+  --pending: #fbbf24;
+  --glow: rgba(16, 185, 129, 0.18);
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --background: #f8fafc;
+    --surface: #ffffff;
+    --surface-2: #f1f4f7;
+    --foreground: #0d1117;
+    --muted: #57616f;
+    --border: #e4e8ec;
+    --accent: #059669;
+    --accent-strong: #047857;
+    --accent-contrast: #ffffff;
+    --up: #059669;
+    --down: #e11d48;
+    --pending: #b45309;
+    --glow: rgba(5, 150, 105, 0.10);
+    color-scheme: light;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-contrast: var(--accent-contrast);
+  --color-up: var(--up);
+  --color-down: var(--down);
+  --color-pending: var(--pending);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-display: var(--font-display-family), var(--font-geist-sans), ui-sans-serif, system-ui,
+    sans-serif;
+}
+
+body {
+  background:
+    radial-gradient(48rem 38rem at 50% -16rem, var(--glow), transparent 72%),
+    var(--background);
+  background-attachment: fixed;
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--accent) 32%, transparent);
+}
+
+.text-gradient {
+  background: linear-gradient(115deg, var(--foreground) 20%, var(--accent-strong));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}

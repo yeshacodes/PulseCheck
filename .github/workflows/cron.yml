@@ -1,0 +1,29 @@
+name: Scheduled monitor checks
+
+# GitHub's scheduler can lag several minutes under load — fine for a 10-minute
+# MVP cadence. Use "Run workflow" (workflow_dispatch) to trigger a check manually.
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch: {}
+
+concurrency:
+  group: pulsecheck-cron
+  cancel-in-progress: false
+
+jobs:
+  check-monitors:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger PulseCheck cron endpoint
+        run: |
+          set -euo pipefail
+          http_code=$(curl -sS -o /tmp/body.txt -w "%{http_code}" \
+            -X POST "$SITE_URL/api/cron/check-monitors" \
+            -H "Authorization: Bearer $CRON_SECRET")
+          echo "HTTP $http_code"
+          cat /tmp/body.txt
+          test "$http_code" = "200"
+        env:
+          SITE_URL: ${{ secrets.PULSECHECK_SITE_URL }}
+          CRON_SECRET: ${{ secrets.PULSECHECK_CRON_SECRET }}
